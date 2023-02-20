@@ -1,0 +1,35 @@
+name: Check Upstream
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "**/README.md"
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: read
+      actions: write
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Get the latest upstream release
+        run: |
+          TAG=$(gh api /repos/cloudflare/cloudflared/releases | jq -r '[.[] | select(.prerelease == false)][0] | .tag_name')
+          echo "TAG=$TAG" >> $GITHUB_ENV
+      - name: Check existing package
+        run: |
+          PKG=$(gh api /users/hyjk2000/packages/container/cloudflared/versions | jq -r '[.[] | select(.metadata.container.tags | index("2023.2.1"))][0] | .id')
+          echo "PKG=$PKG" >> $GITHUB_ENV
+      - uses: actions/checkout@v3
+        if: env.PKG == 'null'
+      - name: Trigger build & publish when needed
+        if: env.PKG == 'null'
+        run: gh workflow run container-publish.yml -f tag=${{ env.TAG }}

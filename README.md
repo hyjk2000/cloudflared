@@ -2,7 +2,7 @@
 
 Unofficial [cloudflared](https://github.com/cloudflare/cloudflared) container images for ARM platforms:
 
-- `linux/arm64` - Raspberry Pi 4
+- `linux/arm64` - Raspberry Pi 3/4
 - `linux/arm/v7` - Raspberry Pi 2/3
 
 ```shell
