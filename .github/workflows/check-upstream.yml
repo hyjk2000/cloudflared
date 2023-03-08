@@ -26,7 +26,7 @@ jobs:
           echo "TAG=$TAG" >> $GITHUB_ENV
       - name: Check existing package
         run: |
-          PKG=$(gh api /users/hyjk2000/packages/container/cloudflared/versions | jq -r '[.[] | select(.metadata.container.tags | index("2023.2.1"))][0] | .id')
+          PKG=$(gh api /users/hyjk2000/packages/container/cloudflared/versions | jq -r '[.[] | select(.metadata.container.tags | index("$TAG"))][0] | .id')
           echo "PKG=$PKG" >> $GITHUB_ENV
       - uses: actions/checkout@v3
         if: env.PKG == 'null'
