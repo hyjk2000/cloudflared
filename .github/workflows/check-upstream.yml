@@ -28,7 +28,7 @@ jobs:
         run: |
           PKG=$(gh api /users/hyjk2000/packages/container/cloudflared/versions | jq -r "[.[] | select(.metadata.container.tags | index(\"$TAG\"))][0] | .id")
           echo "PKG=$PKG" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         if: env.PKG == 'null'
       - name: Trigger build & publish when needed
         if: env.PKG == 'null'
