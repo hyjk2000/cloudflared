@@ -32,4 +32,4 @@ jobs:
         if: env.PKG == 'null'
       - name: Trigger build & publish when needed
         if: env.PKG == 'null'
-        run: gh workflow run container-publish.yml -f tag=${{ env.TAG }}
+        run: gh workflow run build-publish.yml -f tag=${{ env.TAG }}
