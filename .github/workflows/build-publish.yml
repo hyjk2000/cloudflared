@@ -28,6 +28,9 @@ jobs:
           repository: cloudflare/cloudflared
           ref: refs/tags/${{ inputs.tag }}
 
+      - name: Patch upstream Dockerfile to revert to default GOPROXY
+        run: sed -i 's#GOPROXY=[^[:space:]]*#GOPROXY=https://proxy.golang.org,direct#' Dockerfile
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
